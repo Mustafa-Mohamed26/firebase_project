@@ -6,6 +6,7 @@ import 'package:firebase_project/components/Customlogoauth.dart';
 import 'package:firebase_project/components/custom_button_auth.dart';
 import 'package:firebase_project/components/textFormField.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -19,6 +20,29 @@ class _LoginState extends State<Login> {
   TextEditingController password = TextEditingController();
 
   GlobalKey<FormState> formState = GlobalKey<FormState>();
+
+  Future signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) {
+      return;
+    }
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    Navigator.of(context).pushNamedAndRemoveUntil("homepage", (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +192,9 @@ class _LoginState extends State<Login> {
                   borderRadius: BorderRadius.circular(20)),
               color: Colors.white,
               textColor: Colors.blue,
-              onPressed: () {},
+              onPressed: () {
+                signInWithGoogle();
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
