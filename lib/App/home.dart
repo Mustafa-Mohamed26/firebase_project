@@ -23,15 +23,20 @@ class _HomeState extends State<Home> {
           IconButton(
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushNamedAndRemoveUntil("login", (route) => false);
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil("login", (route) => false);
             },
             icon: const Icon(Icons.exit_to_app),
             color: Colors.white,
           ),
         ],
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.blue,
       ),
-      body: const Text("Home"),
+      body: ListView(
+        children: const [
+          Text("Welcome"),
+        ],
+      ),
     );
   }
 }

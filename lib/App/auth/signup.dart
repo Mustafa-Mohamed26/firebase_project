@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+// ignore_for_file: avoid_print, use_build_context_synchronously, body_might_complete_normally_nullable
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -133,7 +133,8 @@ class _SignUpState extends State<SignUp> {
                       email: email.text,
                       password: password.text,
                     );
-                    Navigator.of(context).pushReplacementNamed('homepage');
+                    FirebaseAuth.instance.currentUser!.sendEmailVerification();
+                    Navigator.of(context).pushReplacementNamed('login');
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       print('The password provided is too weak.');

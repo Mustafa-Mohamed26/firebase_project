@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+// ignore_for_file: avoid_print, use_build_context_synchronously, body_might_complete_normally_nullable
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -112,7 +112,19 @@ class _LoginState extends State<Login> {
                       email: email.text,
                       password: password.text,
                     );
-                    Navigator.of(context).pushReplacementNamed("homepage");
+                    if (credential.user!.emailVerified) {
+                      Navigator.of(context).pushReplacementNamed("homepage");
+                    } else {
+                      FirebaseAuth.instance.currentUser!
+                          .sendEmailVerification();
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.info,
+                        animType: AnimType.rightSlide,
+                        title: 'alert',
+                        desc: 'Please verify your email.',
+                      ).show();
+                    }
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       print(
@@ -136,8 +148,6 @@ class _LoginState extends State<Login> {
                       ).show();
                     }
                   }
-                } else {
-                  print("Not valid");
                 }
               },
             ),

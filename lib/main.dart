@@ -13,7 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
   runApp(const MyApp());
 }
 
@@ -25,26 +25,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
-    FirebaseAuth.instance
-  .authStateChanges()
-  .listen((User? user) {
-    if (user == null) {
-      print('====================================User is currently signed out!');
-    } else {
-      print('====================================User is signed in!');
-    }
-  });
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print(
+            '====================================User is currently signed out!');
+      } else {
+        print('====================================User is signed in!');
+      }
+    });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Firebase project",
       debugShowCheckedModeBanner: false,
-      home: FirebaseAuth.instance.currentUser == null ? const Login() : const Home(),
+      home: (FirebaseAuth.instance.currentUser != null &&
+              FirebaseAuth.instance.currentUser!.emailVerified)
+          ? const Home()
+          : const Login(),
       routes: {
         'homepage': (context) => const Home(),
         'login': (context) => const Login(),
