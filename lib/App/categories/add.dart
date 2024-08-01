@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_project/components/custom_button_auth.dart';
 import 'package:firebase_project/components/custom_text_field_add.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +15,22 @@ class AddCategory extends StatefulWidget {
 class _AddCategoryState extends State<AddCategory> {
   GlobalKey<FormState> formState = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
+
+  // Create a CollectionReference called users that references the firestore collection
+  CollectionReference categories =
+      FirebaseFirestore.instance.collection('categories');
+
+  addCategory() async {
+    if (formState.currentState!.validate()) {
+      try {
+        DocumentReference response = await categories.add({'name': name.text});
+        Navigator.of(context).pushReplacementNamed("homepage");
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +54,12 @@ class _AddCategoryState extends State<AddCategory> {
                 },
               ),
             ),
-            CustomButtonAuth(title: "add", onPressed: () {}),
+            CustomButtonAuth(
+              title: "add",
+              onPressed: () {
+                addCategory();
+              },
+            ),
           ],
         ),
       ),

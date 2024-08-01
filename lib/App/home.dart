@@ -49,34 +49,21 @@ class _HomeState extends State<Home> {
           mainAxisExtent: 160,
         ),
         children: [
-          Card(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Image.asset(
-                    "images/folder.png",
-                    height: 110,
-                  ),
-                  const Text("Company"),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Image.asset(
-                    "images/folder.png",
-                    height: 110,
-                  ),
-                  const Text("Home"),
-                ],
-              ),
-            ),
-          ),
+          // Card(
+          //   child: Container(
+          //     padding: const EdgeInsets.all(10),
+          //     child: Column(
+          //       children: [
+          //         Image.asset(
+          //           "images/folder.png",
+          //           height: 110,
+          //         ),
+          //         const Text("Company"),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          
         ],
       ),
     );
