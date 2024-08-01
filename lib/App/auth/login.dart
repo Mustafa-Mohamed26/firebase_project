@@ -112,14 +112,48 @@ class _LoginState extends State<Login> {
                       }
                     },
                   ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    margin: const EdgeInsets.only(top: 10, bottom: 20),
-                    child: const Text(
-                      "Forgot Password ?",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontSize: 14,
+                  InkWell(
+                    onTap: () async {
+                      if (email.text.isEmpty) {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          animType: AnimType.rightSlide,
+                          title: 'Error',
+                          desc: 'please enter your email.',
+                        ).show();
+                        return;
+                      }
+                      try {
+                        await FirebaseAuth.instance
+                            .sendPasswordResetEmail(email: email.text);
+
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.success,
+                          animType: AnimType.rightSlide,
+                          title: 'success',
+                          desc: 'check your email for reset password.',
+                        ).show();
+                      } catch (e) {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.info,
+                          animType: AnimType.rightSlide,
+                          title: 'alert',
+                          desc: 'Email not found try again.',
+                        ).show();
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      margin: const EdgeInsets.only(top: 10, bottom: 20),
+                      child: const Text(
+                        "Forgot Password ?",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ),
@@ -151,8 +185,6 @@ class _LoginState extends State<Login> {
                     }
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
-                      print(
-                          '====================================No user found for that email.');
                       AwesomeDialog(
                         context: context,
                         dialogType: DialogType.error,
@@ -161,8 +193,6 @@ class _LoginState extends State<Login> {
                         desc: 'No user found for that email.',
                       ).show();
                     } else if (e.code == 'wrong-password') {
-                      print(
-                          '====================================Wrong password provided for that user.');
                       AwesomeDialog(
                         context: context,
                         dialogType: DialogType.error,

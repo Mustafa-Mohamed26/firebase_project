@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously, body_might_complete_normally_nullable
+// ignore_for_file: avoid_print, use_build_context_synchronously, body_might_complete_normally_nullable, unused_local_variable
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
